@@ -52,22 +52,6 @@
         </c:forEach>
     </table>
 </section>
-
-<hr>
-<%
-	java.util.Enumeration params = request.getAttributeNames();
-	while(params.hasMoreElements()) {
-		String paramName = (String) params.nextElement();
-		Object paramValue = request.getAttribute(paramName);
-%>
-
-<h5><%=paramName%>
-	has a value
-	<%=paramValue%></h5>
-
-<%
-	}
-%>
 <hr>
 </body>
 </html>

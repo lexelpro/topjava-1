@@ -11,22 +11,5 @@
 <hr>
 <h2>Users</h2>
 <p>Current User is ${param.get("userId") == null ? 'Unknown' : param.get("userId") == '1' ? 'Admin' : 'User'}</p>
-<hr>
-<%
-	java.util.Enumeration params = request.getParameterNames();
-	while(params.hasMoreElements()) {
-	String paramName = (String) params.nextElement();
-	String paramValue = request.getParameter(paramName);
-%>
-
-<h5><%=paramName%>
-	has a value
-	<%=paramValue%></h5>
-
-<%
-	}
-%>
-<hr>
-
 </body>
 </html>

@@ -9,7 +9,6 @@ import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,21 +19,20 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import static ru.javawebinar.topjava.web.SecurityUtil.getAuthUserId;
-
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     private MealRepository repository;
     private UserRepository userRepository;
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        repository = new InMemoryMealRepository();
-        userRepository = new InMemoryUserRepository();
-    }
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		repository = new InMemoryMealRepository();
+		userRepository = new InMemoryUserRepository();
+	}
 
-    @Override
+	@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
