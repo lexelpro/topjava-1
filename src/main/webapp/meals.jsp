@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.topjava.model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -20,7 +21,8 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
-    <h2>Meals</h2>
+	<% User user = (User) request.getAttribute("user"); %>
+    <h2>Meals of user ${user.email}</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
@@ -34,7 +36,7 @@
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
@@ -50,5 +52,22 @@
         </c:forEach>
     </table>
 </section>
+
+<hr>
+<%
+	java.util.Enumeration params = request.getAttributeNames();
+	while(params.hasMoreElements()) {
+		String paramName = (String) params.nextElement();
+		Object paramValue = request.getAttribute(paramName);
+%>
+
+<h5><%=paramName%>
+	has a value
+	<%=paramValue%></h5>
+
+<%
+	}
+%>
+<hr>
 </body>
 </html>

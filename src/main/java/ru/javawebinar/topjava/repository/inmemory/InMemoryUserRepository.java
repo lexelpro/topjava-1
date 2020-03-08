@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
+import ru.javawebinar.topjava.util.UserUtil;
 
-import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -28,13 +28,15 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public User get(int id) {
         log.info("get {}", id);
-        return null;
+		User user = UserUtil.getUsers().stream().filter(u -> u.getId().equals(id)).findAny().orElse(null);
+		log.info("get {}", user);
+		return user;
     }
 
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        return Collections.emptyList();
+        return UserUtil.getUsers();
     }
 
     @Override
