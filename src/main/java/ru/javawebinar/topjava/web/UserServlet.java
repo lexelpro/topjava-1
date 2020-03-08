@@ -37,7 +37,7 @@ public class UserServlet extends HttpServlet {
 		log.debug("User id is {}", req.getParameter("userId"));
 		String paramUserId = req.getParameter("userId");
 		SecurityUtil.setAuthUserId(Integer.parseInt(paramUserId));
-		req.setAttribute("userId", req.getParameter("userId"));
-		req.getRequestDispatcher("/users.jsp").forward(req, resp);
+		resp.sendRedirect("/topjava");
+//		req.getRequestDispatcher("/index.html").forward(req, resp);
 	}
 }
