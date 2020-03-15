@@ -51,6 +51,7 @@
 > - При сравнении еды тесты падают, т.к. Hibernate делает ленивую обертку к `user`, и если происходит обращение к любому его полю (кроме id) вне транзакции, бросается `LazyInitializationException`.
 По логике приложения поле `user` в еде не нужно, и мы не будем его отдавать наружу: в тестах исключаем `user` из сравнения.
 > - Поменял реализацию `JpaMealRepository.get()` (вместо `@NamedQuery`), реализация стали проще
+> - Сделал `JpaMealRepository.save` проще и понятнее (`em.getReference` не делает запрос в базу и чужая еда- не основной юзкейс)
 > - Вместо BETWEEN (и CAST) в JPA реализации сделал [Half Open сравнение](https://stackoverflow.com/a/20536041/548473).
 См. также [SQL “between” not inclusive](https://stackoverflow.com/questions/16347649/sql-between-not-inclusive/16347680)   
 
@@ -134,6 +135,8 @@
 > Сделал автоматический выбор профиля базы при запуске приложения (тестов) в зависимости от присутствия драйвера базы в classpath (`Profiles.getActiveDbProfile()`)
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 5. <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFTWJOdHduOWtNcTA">Пул коннектов</a>
+![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) [Александр Колесников - JDBC Pools Battle](https://www.youtube.com/watch?v=J9GzE2qlNuM&feature=youtu.be&t=2895) (ссылка на выводы)
+
 >  [BoneCP to be deprecated ](https://stackoverflow.com/a/1662916/548473)
 -  Выбор реализации пула коннектов: <a href="https://commons.apache.org/proper/commons-dbcp/">Commons Database Connection Pooling</a>, <a href="https://github.com/brettwooldridge/HikariCP">HikariCP</a>
 -  <a href="https://habrahabr.ru/post/269023/">Самый быстрый пул соединений на java (читаем комменты)</a>
