@@ -1,100 +1,109 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 @NamedQueries({
-		@NamedQuery(name = Meal.ALL_BY_USER_ID_SORTED, query = "select m from Meal m where m.user.id = :userId"),
-		@NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m where m.id = :id and m.user.id = :userId"),
-		@NamedQuery(name = Meal.BY_ID_AND_USER_ID, query = "SELECT m from Meal m where m.id = :id and m.user.id = :userId"),
-		@NamedQuery(name = Meal.GET_BETWEEN, query = "SELECT m from Meal m where m.dateTime >= :startDate and m.dateTime < :endDate and m.user.id = :userId order by m.dateTime desc")
+		@NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
+		@NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
+		@NamedQuery(name = Meal.GET_BETWEEN, query = "SELECT m FROM Meal m " +
+				"WHERE m.user.id=:userId AND m.dateTime >= :startDateTime AND m.dateTime < :endDateTime ORDER BY m.dateTime DESC"),
+//        @NamedQuery(name = Meal.UPDATE, query = "UPDATE Meal m SET m.dateTime = :datetime, m.calories= :calories," +
+//                "m.description=:desc where m.id=:id and m.user.id=:userId")
 })
 @Entity
-@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = "id", name = "meals_pkey")})
+@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meals_unique_user_datetime_idx")})
 public class Meal extends AbstractBaseEntity {
-	public static final String ALL_BY_USER_ID_SORTED = "Meal.getAllByUserIdSorted";
-	public static final String DELETE = "Meal.Delete";
-	public static final String BY_ID_AND_USER_ID = "Meal.byIdAndUserId";
-	public static final String GET_BETWEEN = "Meal.between";
-	@Column(name ="date_time",nullable = false)
+	public static final String ALL_SORTED = "Meal.getAll";
+	public static final String DELETE = "Meal.delete";
+	public static final String GET_BETWEEN = "Meal.getBetween";
+
+	@Column(name = "date_time", nullable = false)
 	@NotNull
 	private LocalDateTime dateTime;
 
 	@Column(name = "description", nullable = false)
 	@NotBlank
+	@Size(min = 2, max = 120)
 	private String description;
 
 	@Column(name = "calories", nullable = false)
-    private int calories;
+	@Range(min = 10, max = 5000)
+	private int calories;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false, name = "user_id")
-    private User user;
+	@JoinColumn(name = "user_id", nullable = false)
+	@NotNull
+	private User user;
 
-    public Meal() {
-    }
+	public Meal() {
+	}
 
-    public Meal(LocalDateTime dateTime, String description, int calories) {
-        this(null, dateTime, description, calories);
-    }
+	public Meal(LocalDateTime dateTime, String description, int calories) {
+		this(null, dateTime, description, calories);
+	}
 
-    public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
-        super(id);
-        this.dateTime = dateTime;
-        this.description = description;
-        this.calories = calories;
-    }
+	public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
+		super(id);
+		this.dateTime = dateTime;
+		this.description = description;
+		this.calories = calories;
+	}
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
+	public LocalDateTime getDateTime() {
+		return dateTime;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setDateTime(LocalDateTime dateTime) {
+		this.dateTime = dateTime;
+	}
 
-    public int getCalories() {
-        return calories;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public LocalDate getDate() {
-        return dateTime.toLocalDate();
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public LocalTime getTime() {
-        return dateTime.toLocalTime();
-    }
+	public int getCalories() {
+		return calories;
+	}
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
+	public void setCalories(int calories) {
+		this.calories = calories;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public LocalDate getDate() {
+		return dateTime.toLocalDate();
+	}
 
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
+	public LocalTime getTime() {
+		return dateTime.toLocalTime();
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    @Override
-    public String toString() {
-        return "Meal{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", calories=" + calories +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Meal{" +
+				"id=" + id +
+				", dateTime=" + dateTime +
+				", description='" + description + '\'' +
+				", calories=" + calories +
+				'}';
+	}
 }
