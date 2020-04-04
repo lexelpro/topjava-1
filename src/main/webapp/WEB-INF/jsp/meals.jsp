@@ -4,18 +4,18 @@
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 <html>
 <head>
-    <title>Meals</title>
-    <link rel="stylesheet" href="css/style.css">
+	<title>Meals</title>
+	<link rel="stylesheet" href="resources/css/style.css">
 </head>
 <body>
 <section>
-    <h3><a href="index.jsp">Home</a></h3>
-    <hr/>
-    <h2>Meals</h2>
-    <form method="get" action="meals">
-        <input type="hidden" name="action" value="filter">
-        <dl>
-            <dt>From Date:</dt>
+	<h3><a href="index.jsp">Home</a></h3>
+	<hr/>
+	<h2>Meals</h2>
+	<form method="get" action="meals">
+		<input type="hidden" name="action" value="filter">
+		<dl>
+			<dt>From Date:</dt>
             <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
         </dl>
         <dl>
@@ -46,20 +46,20 @@
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
-            <tr data-mealExcess="${meal.excess}">
-                <td>
-                        <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
-                        <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
-                        <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
-                        ${fn:formatDateTime(meal.dateTime)}
-                </td>
-                <td>${meal.description}</td>
-                <td>${meal.calories}</td>
-                <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
-                <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
-            </tr>
-        </c:forEach>
+			<jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
+			<tr data-mealExcess="${meal.excess}">
+				<td>
+						<%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
+						<%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
+						<%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
+						${fn:formatDateTime(meal.dateTime)}
+				</td>
+				<td>${meal.description}</td>
+				<td>${meal.calories}</td>
+				<td><a href="meals/update/${meal.id}">Update</a></td>
+				<td><a href="meals/delete/${meal.id}">Delete</a></td>
+			</tr>
+		</c:forEach>
     </table>
 </section>
 </body>
