@@ -115,6 +115,7 @@
 > В `UserService` добавил `@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)`, т.к. без этой аннотации для кэширования создается прокси над интерфейсом `UserDetailsService` (см. следующее видео по типам проксирования Spring). Можете проверить, что без этой аннотации приложение не поднимется. 
 
 -  <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#userdetailsservice-implementations">UserDetailsService Implementations</a>
+- [serialVersionUID value](https://stackoverflow.com/a/605832/548473)
 
 ### ![video](https://cloud.githubusercontent.com/assets/13649199/13672715/06dbc6ce-e6e7-11e5-81a9-04fbddb9e488.png) 9.  <a href="https://drive.google.com/open?id=0B9Ye2auQ_NsFT2Qya2V4N0kzWWM">Принцип работы Spring Security. Проксирование.</a>
 -  <a href="https://ru.wikibooks.org/wiki/Spring_Security/Технический_обзор_Spring_Security">Технический обзор Spring Security</a>
@@ -166,10 +167,9 @@
 - 1: Реализовать для meal Binding/ Update/ Validation. Проверить работу при пустом значении `calories`.
 - 2: Перевести `meals.jsp` на работу по ajax. Стиль строки таблицы сделать в зависимости от `excess`, время отображать без `T`. Добавить i18n.
 - 3: Починить meals тесты, добавить тест на неавторизованный доступ
-- 4: Добавить валидацию в `JdbcMealRepository` 
 
 ### Optional
-- 5: Подключить datetime-picker к фильтрам и модальному окну добавления/редактирования еды
+- 4: Подключить datetime-picker к фильтрам и модальному окну добавления/редактирования еды
   - <a href="http://xdsoft.net/jqplugins/datetimepicker/">DateTimePicker jQuery plugin</a>
   - [jQuery: конверторы](https://jquery-docs.ru/jQuery.ajax/#using-converters)
 
@@ -186,7 +186,8 @@
 <c:forEach var='key' ...
 i18n['${key}'] = ...
 ```
-- 3: Для подключения css и js datetimepicker-а посмотрите в его jar (или поищите в проекте по Ctrl+Shift+N: `datetimepicker`)
+- 3: Для подключения css и js datetimepicker-а посмотрите в его jar (или поищите в проекте по Ctrl+Shift+N: `datetimepicker`). 
+При ошибке в datetimepicker javascript, обратите внимание на **имя javascript файла** в [DateTimePicker](https://xdsoft.net/jqplugins/datetimepicker/) "How do I use it?"
 - 4: datetimepicker работает корректно в Хроме, если убрать в `type` в `<input type="date/time/datetime-local" ..`
 - 5: Если появляются проблемы с JS типа `... is not defined` - обратите внимание на порядок загрузки скриптов и атрибут `defer`. Скрипты должны идти в нужном порядке. Если определяете скрипт прямо в jsp, он выполняется до `defer` скриптов.
 - 6: Не дублируйте обработку ошибок в `BindingResult` в ajax контроллерах
