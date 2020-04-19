@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
+import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
@@ -8,26 +9,30 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Repository
 public class DataJpaMealRepository implements MealRepository {
+	private static final Logger logger = getLogger(DataJpaMealRepository.class);
+	private final CrudMealRepository crudMealRepository;
+	private final CrudUserRepository crudUserRepository;
 
-    private final CrudMealRepository crudMealRepository;
-    private final CrudUserRepository crudUserRepository;
+	public DataJpaMealRepository(CrudMealRepository crudMealRepository, CrudUserRepository crudUserRepository) {
+		this.crudMealRepository = crudMealRepository;
+		this.crudUserRepository = crudUserRepository;
+	}
 
-    public DataJpaMealRepository(CrudMealRepository crudMealRepository, CrudUserRepository crudUserRepository) {
-        this.crudMealRepository = crudMealRepository;
-        this.crudUserRepository = crudUserRepository;
-    }
-
-    @Override
-    @Transactional
+	@Override
+	@Transactional
     public Meal save(Meal meal, int userId) {
-        if (!meal.isNew() && get(meal.id(), userId) == null) {
-            return null;
-        }
-        meal.setUser(crudUserRepository.getOne(userId));
-        return crudMealRepository.save(meal);
-    }
+		if (!meal.isNew() && get(meal.id(), userId) == null) {
+			return null;
+		}
+		meal.setUser(crudUserRepository.getOne(userId));
+		Meal savedMeal = crudMealRepository.save(meal);
+		logger.info("Saved Meal Object {}", savedMeal);
+		return savedMeal;
+	}
 
     @Override
     public boolean delete(int id, int userId) {
