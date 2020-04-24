@@ -1,27 +1,40 @@
 package ru.javawebinar.topjava.to;
 
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class MealTo extends BaseTo {
+public class MealTo extends BaseTo implements Serializable {
+	private static final long serialVersionUID = 3L;
 
-    private final LocalDateTime dateTime;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	@NotNull
+	private final LocalDateTime dateTime;
 
-    private final String description;
+	@NotBlank
+	@Size(max = 120, min = 2)
+	private final String description;
 
-    private final int calories;
+	@Range(min = 10, max = 5000)
+	private final int calories;
 
-    private final boolean excess;
+	private final Boolean excess;
 
-    @ConstructorProperties({"id", "dateTime", "description", "calories", "excess"})
-    public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, boolean excess) {
-        super(id);
-        this.dateTime = dateTime;
-        this.description = description;
-        this.calories = calories;
-        this.excess = excess;
-    }
+	@ConstructorProperties({"id", "dateTime", "description", "calories", "excess"})
+	public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, Boolean excess) {
+		super(id);
+		this.dateTime = dateTime;
+		this.description = description;
+		this.calories = calories;
+		this.excess = excess;
+	}
 
     public LocalDateTime getDateTime() {
         return dateTime;
