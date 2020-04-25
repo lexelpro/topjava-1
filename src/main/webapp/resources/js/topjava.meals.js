@@ -35,10 +35,9 @@ $(function () {
 							}
 							var rowIndex = meta.row + 1;
 							$('#datatable tbody tr:nth-child(' + rowIndex + ')').addClass(rowClass);
-							return data;
-						} else {
-							return data;
+
 						}
+						return moment(data).format('YYYY-MM-DD hh:mm:ss');
 					}
 				},
 				{
